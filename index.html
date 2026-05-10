@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tábor Media Mission / Jak se informace šíří</title>
+  <style>
+    :root {
+      --bg: #f7f2ec;
+      --card: #ffffff;
+      --text: #1b1b2f;
+      --muted: #667085;
+      --line: #e2d7cc;
+      --navy: #1b1b2f;
+      --wine: #941f57;
+      --wine-dark: #741642;
+      --gold: #d17a24;
+      --gold-soft: #fff4e6;
+      --ok: #047857;
+      --bad: #b91c1c;
+      --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.45;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--navy), var(--wine-dark));
+      color: white;
+      padding: 38px 18px;
+      border-bottom: 8px solid var(--gold);
+    }
+
+    .wrap { max-width: 980px; margin: 0 auto; }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      line-height: 1.08;
+    }
+
+    h2 { margin: 0 0 14px; font-size: 1.35rem; }
+    h3 { margin: 0 0 8px; font-size: 1.05rem; }
+    p { margin: 0 0 10px; }
+
+    .subtitle {
+      opacity: .94;
+      max-width: 820px;
+      font-size: 1.05rem;
+      color: #ffe2bd;
+      font-style: italic;
+    }
+
+    main { padding: 22px 18px 60px; }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      padding: 18px;
+      box-shadow: var(--shadow);
+      margin: 18px 0;
+      overflow: hidden;
+    }
+
+    .intro-card {
+      border-left: 8px solid var(--wine);
+    }
+
+    .grid { display: grid; gap: 14px; }
+    .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+    @media (max-width: 760px) {
+      .grid.two, .grid.three { grid-template-columns: 1fr; }
+    }
+
+    label {
+      display: block;
+      font-weight: 750;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      color: var(--muted);
+      font-size: .92rem;
+      margin-top: 4px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      border: 1px solid #cdbfb5;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      background: #fff;
+    }
+
+    textarea { min-height: 86px; resize: vertical; }
+    .mini { min-height: 52px; }
+
+    .task-title {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      height: 36px;
+      border-radius: 999px;
+      color: white;
+      background: var(--wine);
+      font-weight: 900;
+      border: 3px solid #f1c17b;
+    }
+
+    .langbox {
+      background: #fffaf3;
+      border: 1px dashed #d9a25f;
+      border-radius: 14px;
+      padding: 12px;
+      color: #344054;
+      margin: 10px 0 14px;
+    }
+
+    .langbox strong { color: #111827; }
+
+    .checks { display: grid; gap: 8px; margin: 8px 0; }
+
+    .checks label {
+      display: flex;
+      gap: 10px;
+      font-weight: 500;
+      align-items: flex-start;
+      margin: 0;
+      padding: 9px 10px;
+      background: #fffaf3;
+      border: 1px solid #ead8bf;
+      border-radius: 12px;
+    }
+
+    .checks input { width: auto; margin-top: 4px; }
+
+    .radio-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 8px 0;
+    }
+
+    .radio-row label {
+      font-weight: 500;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border: 1px solid #ead8bf;
+      border-radius: 999px;
+      background: #fffaf3;
+      margin: 0;
+    }
+
+    .radio-row input { width: auto; }
+
+    .mission {
+      background: var(--gold-soft);
+      border: 1px solid #f1c17b;
+      border-radius: 14px;
+      padding: 12px;
+      margin: 10px 0;
+    }
+
+    .photo-task {
+      border: 1px solid #ead8bf;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fffdf9;
+    }
+
+    .pair-board {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .pair-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid #ead8bf;
+      border-radius: 14px;
+      background: #fffaf3;
+    }
+
+    @media (max-width: 760px) {
+      .pair-row { grid-template-columns: 1fr; }
+    }
+
+    .then-card {
+      font-weight: 900;
+      color: var(--wine-dark);
+    }
+
+    .pair-result {
+      font-weight: 900;
+      font-size: 1.4rem;
+      text-align: center;
+      min-height: 32px;
+    }
+
+    .pair-result.ok { color: var(--ok); }
+    .pair-result.bad { color: var(--bad); }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    button, .buttonlike {
+      border: 0;
+      border-radius: 999px;
+      padding: 11px 16px;
+      font-weight: 800;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .primary { background: var(--wine); color: white; }
+    .secondary { background: #f8d08a; color: #5f2d04; }
+    .neutral { background: #ebe7f2; color: var(--navy); }
+
+    .autosave-note {
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #fffaf3;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .footer-note {
+      color: var(--muted);
+      font-size: .9rem;
+      margin-top: 12px;
+    }
+
+    .no-print {}
+
+    @media print {
+      body { background: white; }
+      header, .actions, .no-print { display: none !important; }
+      .card { box-shadow: none; border-color: #aaa; page-break-inside: avoid; }
+      textarea { min-height: 70px; }
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <h1>Tábor Media Mission</h1>
+      <p class="subtitle">Jak se informace šíří a komu věříme? / How does information spread and who do we trust? / Comment l’information circule-t-elle et à qui faisons-nous confiance ?</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <section class="card intro-card">
+      <div>
+        <label for="groupName">Název skupiny / Group name / Nom du groupe *</label>
+        <input id="groupName" required placeholder="např. Chalice Hunters" />
+      </div>
+      <div class="grid two" style="margin-top:14px;">
+        <div>
+          <label for="members">Členové / Members / Membres *</label>
+          <textarea id="members" class="mini" placeholder="Jména členů skupiny"></textarea>
+        </div>
+        <div>
+          <label for="languages">Jazyky použité při práci / Languages used / Langues utilisées</label>
+          <input id="languages" placeholder="English, Français, Čeština…" />
+        </div>
+      </div>
+      <div class="autosave-note">Vaše odpovědi se ukládají průběžně v tomto zařízení. / Your answers are saved automatically on this device. / Vos réponses sont enregistrées automatiquement sur cet appareil.</div>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">1</span><h2>First impression of Tábor / První dojem z Tábora / Première impression de Tábor</h2></div>
+      <div class="langbox">
+        <p><strong>CZ:</strong> Dívejte se na město jako detektivové. Co vám město říká svými budovami, ulicemi, symboly a atmosférou?</p>
+        <p><strong>EN:</strong> Look at the town like detectives. What does the town tell you through its buildings, streets, symbols and atmosphere?</p>
+        <p><strong>FR:</strong> Observez la ville comme des détectives. Que raconte la ville à travers ses bâtiments, ses rues, ses symboles et son atmosphère ?</p>
+      </div>
+      <label for="firstImpression">Co vás zaujalo jako první? / What caught your attention first? / Qu’est-ce qui a attiré votre attention en premier ?</label>
+      <textarea id="firstImpression"></textarea>
+      <div class="radio-row">
+        <label><input type="radio" name="townFeeling" value="safe" /> safe / bezpečné / sûr</label>
+        <label><input type="radio" name="townFeeling" value="powerful" /> powerful / mocné / puissant</label>
+        <label><input type="radio" name="townFeeling" value="religious" /> religious / náboženské / religieux</label>
+        <label><input type="radio" name="townFeeling" value="closed" /> closed / uzavřené / fermé</label>
+        <label><input type="radio" name="townFeeling" value="welcoming" /> welcoming / vstřícné / accueillant</label>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">2</span><h2>Symbol Hunt 📸 / Lov symbolů / Chasse aux symboles</h2></div>
+      <div class="mission">
+        <p><strong>CZ:</strong> Na Žižkově náměstí, u Husitského muzea a u Bechyňské brány hledejte symboly spojené s husitskou dobou. Důkaz vyfoťte do galerie mobilu.</p>
+        <p><strong>EN:</strong> At Žižka Square, near the Hussite Museum and Bechyně Gate, look for symbols connected with the Hussite period. Take a photo as proof in your phone gallery.</p>
+        <p><strong>FR:</strong> Sur la place Žižka, près du musée hussite et de la porte de Bechyně, cherchez des symboles liés à l’époque hussite. Prenez une photo comme preuve dans la galerie du téléphone.</p>
+      </div>
+      <div class="grid two">
+        <div class="photo-task">
+          <h3>🏆 Chalice / Kalich / Calice</h3>
+          <div class="checks">
+            <label><input type="checkbox" id="chaliceFound" /> Found / Nalezeno / Trouvé</label>
+            <label><input type="checkbox" id="chalicePhoto" /> Photo taken / Vyfoceno / Photo prise</label>
+          </div>
+          <label for="chaliceWhere">Kde jste ho našli? / Where did you find it? / Où l’avez-vous trouvé ?</label>
+          <input id="chaliceWhere" />
+        </div>
+        <div class="photo-task">
+          <h3>🛡 City defence / Obrana města / Défense de la ville</h3>
+          <div class="checks">
+            <label><input type="checkbox" id="defenceFound" /> Found / Nalezeno / Trouvé</label>
+            <label><input type="checkbox" id="defencePhoto" /> Photo taken / Vyfoceno / Photo prise</label>
+          </div>
+          <label for="defenceWhere">Co jste našli? / What did you find? / Qu’avez-vous trouvé ?</label>
+          <input id="defenceWhere" placeholder="gate, wall, tower…" />
+        </div>
+        <div class="photo-task">
+          <h3>👑 Power or authority / Moc nebo autorita / Pouvoir ou autorité</h3>
+          <div class="checks">
+            <label><input type="checkbox" id="authorityFound" /> Found / Nalezeno / Trouvé</label>
+            <label><input type="checkbox" id="authorityPhoto" /> Photo taken / Vyfoceno / Photo prise</label>
+          </div>
+          <label for="authorityWhere">Jaký symbol? / What symbol? / Quel symbole ?</label>
+          <input id="authorityWhere" />
+        </div>
+        <div class="photo-task">
+          <h3>⛪ Faith or community / Víra nebo komunita / Foi ou communauté</h3>
+          <div class="checks">
+            <label><input type="checkbox" id="faithFound" /> Found / Nalezeno / Trouvé</label>
+            <label><input type="checkbox" id="faithPhoto" /> Photo taken / Vyfoceno / Photo prise</label>
+          </div>
+          <label for="faithWhere">Kde jste symbol viděli? / Where did you see it? / Où l’avez-vous vu ?</label>
+          <input id="faithWhere" />
+        </div>
+      </div>
+      <label for="symbolMeaning" style="margin-top:14px;">Který symbol podle vás nejvíc ovlivňoval lidi? Proč? / Which symbol influenced people most? Why? / Quel symbole influençait le plus les gens ? Pourquoi ?</label>
+      <textarea id="symbolMeaning"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">3</span><h2>Who was the source of information? / Kdo byl zdrojem informací? / Qui était la source d’information ?</h2></div>
+      <div class="checks">
+        <label><input type="checkbox" id="sourcePreacher" /> preacher / kazatel / prédicateur</label>
+        <label><input type="checkbox" id="sourceLeader" /> leader / vůdce / chef</label>
+        <label><input type="checkbox" id="sourceNeighbour" /> neighbour / soused / voisin</label>
+        <label><input type="checkbox" id="sourceChurch" /> church / církev / église</label>
+        <label><input type="checkbox" id="sourceSongs" /> songs / písně / chansons</label>
+        <label><input type="checkbox" id="sourceSymbols" /> symbols and pictures / symboly a obrazy / symboles et images</label>
+      </div>
+      <label for="trustedSource">Komu podle vás lidé tehdy nejvíc věřili? / Who did people trust most at that time? / À qui faisait-on le plus confiance à cette époque ?</label>
+      <textarea id="trustedSource" class="mini"></textarea>
+      <label for="trustedToday">Komu lidé často věří dnes? / Who do people often trust today? / À qui les gens font-ils souvent confiance aujourd’hui ?</label>
+      <textarea id="trustedToday" class="mini"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">4</span><h2>How did ideas spread? / Jak se šířily myšlenky? / Comment les idées circulaient-elles ?</h2></div>
+      <div class="checks">
+        <label><input type="checkbox" id="spreadSermon" /> sermon / kázání / sermon</label>
+        <label><input type="checkbox" id="spreadSymbols" /> symbols / symboly / symboles</label>
+        <label><input type="checkbox" id="spreadSongs" /> songs / písně / chansons</label>
+        <label><input type="checkbox" id="spreadImages" /> pictures / obrazy / images</label>
+        <label><input type="checkbox" id="spreadSquare" /> public square / náměstí / place publique</label>
+        <label><input type="checkbox" id="spreadStories" /> stories and rumours / příběhy a zvěsti / histoires et rumeurs</label>
+      </div>
+      <label for="spreadExample">Najděte jeden příklad ve městě. Jakou myšlenku nebo zprávu předává? / Find one example in the town. What idea or message does it communicate? / Trouvez un exemple dans la ville. Quelle idée ou quel message transmet-il ?</label>
+      <textarea id="spreadExample"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">5</span><h2>Find a Pair 🧩 / Najdi dvojici / Trouve la paire</h2></div>
+      <p class="hint">Spojte, co mělo podobnou roli dříve a dnes. / Match what had a similar role then and now. / Associez ce qui avait un rôle similaire autrefois et aujourd’hui.</p>
+      <div class="pair-board">
+        <div class="pair-row">
+          <div class="then-card">Kazatel / Preacher / Prédicateur</div>
+          <select id="pairPreacher" data-correct="moderator">
+            <option value="">Choose...</option>
+            <option value="internet">Internet / internet / internet</option>
+            <option value="moderator">Journalist, moderator or influencer / novinář, moderátor nebo influencer / journaliste, présentateur ou influenceur</option>
+            <option value="audience">Audience / publikum / public</option>
+            <option value="belief">Common belief / společná víra / croyance commune</option>
+          </select>
+          <div id="resultPreacher" class="pair-result"></div>
+        </div>
+        <div class="pair-row">
+          <div class="then-card">Kázání / Sermon / Sermon</div>
+          <select id="pairSermon" data-correct="media">
+            <option value="">Choose...</option>
+            <option value="media">Radio, TV or online video / rádio, TV nebo online video / radio, télévision ou vidéo en ligne</option>
+            <option value="leader">Leader / vůdce / chef</option>
+            <option value="gate">Town gate / městská brána / porte de la ville</option>
+            <option value="money">Money / peníze / argent</option>
+          </select>
+          <div id="resultSermon" class="pair-result"></div>
+        </div>
+        <div class="pair-row">
+          <div class="then-card">Společná víra / Common belief / Croyance commune</div>
+          <select id="pairBelief" data-correct="community">
+            <option value="">Choose...</option>
+            <option value="law">Law / zákon / loi</option>
+            <option value="community">Community identity / identita komunity / identité de la communauté</option>
+            <option value="map">Map / mapa / carte</option>
+            <option value="shop">Shop / obchod / magasin</option>
+          </select>
+          <div id="resultBelief" class="pair-result"></div>
+        </div>
+        <div class="pair-row">
+          <div class="then-card">Symboly a písně / Symbols and songs / Symboles et chansons</div>
+          <select id="pairSymbols" data-correct="memes">
+            <option value="">Choose...</option>
+            <option value="museum">Museum / muzeum / musée</option>
+            <option value="memes">Memes, logos and hashtags / memy, loga a hashtagy / mèmes, logos et hashtags</option>
+            <option value="taxes">Taxes / daně / impôts</option>
+            <option value="weather">Weather / počasí / météo</option>
+          </select>
+          <div id="resultSymbols" class="pair-result"></div>
+        </div>
+      </div>
+      <label for="pairReflection" style="margin-top:14px;">Co podle vás zůstalo stejné? / What stayed the same? / Qu’est-ce qui est resté pareil ?</label>
+      <textarea id="pairReflection"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">6</span><h2>Influence detector / Detektor ovlivňování / Détecteur d’influence</h2></div>
+      <p class="hint">Vyberte příklad, který podle vás mohl lidi ovlivnit. Nemusí jít o manipulaci; může jít i o důvěru, emoce nebo společnou identitu.</p>
+      <div class="checks">
+        <label><input type="checkbox" id="influenceEmotion" /> uses emotion / pracuje s emocemi / utilise les émotions</label>
+        <label><input type="checkbox" id="influenceAuthority" /> uses authority / působí autoritou / utilise l’autorité</label>
+        <label><input type="checkbox" id="influenceTrust" /> creates trust / vytváří důvěru / crée la confiance</label>
+        <label><input type="checkbox" id="influenceUs" /> creates “us” / vytváří pocit „my“ / crée un sentiment de “nous”</label>
+        <label><input type="checkbox" id="influenceFear" /> uses fear or danger / pracuje se strachem nebo nebezpečím / utilise la peur ou le danger</label>
+      </div>
+      <label for="influenceExample">Popište svůj příklad. / Describe your example. / Décrivez votre exemple.</label>
+      <textarea id="influenceExample"></textarea>
+      <label for="influenceHow">Jak přesně ovlivňuje lidi? / How exactly does it influence people? / Comment influence-t-il les gens ?</label>
+      <textarea id="influenceHow"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">7</span><h2>Live report from Tábor 🎙 / Živý vstup z Tábora / Reportage en direct de Tábor</h2></div>
+      <div class="langbox">
+        <p><strong>CZ:</strong> Vyberte si jeden typ reportáže. Pak napište krátký scénář 3–5 vět. Audio si můžete nahrát do mobilu, ale do formuláře se neposílá.</p>
+        <p><strong>EN:</strong> Choose one type of report. Then write a short 3–5 sentence script. You may record the audio on your phone, but it is not uploaded through this form.</p>
+        <p><strong>FR:</strong> Choisissez un type de reportage. Écrivez ensuite un court script de 3 à 5 phrases. Vous pouvez enregistrer l’audio sur votre téléphone, mais il n’est pas envoyé par ce formulaire.</p>
+      </div>
+      <div class="checks">
+        <label><input type="checkbox" id="reportPreacher" /> Medieval preacher: “People of Tábor, listen…” / Středověký kazatel / Prédicateur médiéval</label>
+        <label><input type="checkbox" id="reportMessenger" /> Town messenger: “News from the town square…” / Městský posel / Messager de la ville</label>
+        <label><input type="checkbox" id="reportJournalist" /> Modern journalist: “We are reporting from Tábor…” / Moderní novinář / Journaliste moderne</label>
+        <label><input type="checkbox" id="reportInfluencer" /> Influencer: “Three things you must notice in Tábor…” / Influencer / Influenceur</label>
+        <label><input type="checkbox" id="reportGuide" /> Tourist guide: “This place tells us…” / Průvodce / Guide touristique</label>
+      </div>
+      <label for="reportScript">Napište scénář reportáže. / Write your report script. / Écrivez le script de votre reportage.</label>
+      <textarea id="reportScript" style="min-height:120px;" placeholder="We are reporting from Tábor..."></textarea>
+      <div class="checks">
+        <label><input type="checkbox" id="audioRecorded" /> Audio recorded on phone / Audio nahráno do mobilu / Audio enregistré sur le téléphone</label>
+      </div>
+      <label for="reportInfluence">Jakou emoci nebo myšlenku jste chtěli šířit? / What emotion or idea did you want to spread? / Quelle émotion ou idée vouliez-vous transmettre ?</label>
+      <textarea id="reportInfluence" class="mini"></textarea>
+    </section>
+
+    <section class="card">
+      <div class="task-title"><span class="badge">8</span><h2>Final reflection / Závěrečná reflexe / Réflexion finale</h2></div>
+      <label for="mostImportant">Co je podle vás nejdůležitější zjištění dne? / What is the most important discovery of the day? / Quelle est la découverte la plus importante de la journée ?</label>
+      <textarea id="mostImportant"></textarea>
+      <label for="thenToday">Jsou dnešní média úplně jiná než středověké šíření informací? V čem ano/ne? / Are today’s media completely different from medieval communication? How yes/no? / Les médias d’aujourd’hui sont-ils complètement différents de la communication médiévale ? Pourquoi ?</label>
+      <textarea id="thenToday"></textarea>
+      <label for="whoTrust">Komu byste důvěřovali vy? / Who would you trust? / À qui feriez-vous confiance ?</label>
+      <textarea id="whoTrust" class="mini"></textarea>
+
+      <div class="actions no-print">
+        <button id="sendBtn" class="primary" onclick="sendForm()">Odeslat / Send</button>
+        <button id="pdfBtn" class="secondary" onclick="downloadPDF()">Stáhnout PDF / Download PDF</button>
+      </div>
+      <p class="footer-note">Fotky a případné audio zůstávají v galerii/diktafonu mobilu. / Photos and optional audio stay in the phone gallery/recorder. / Les photos et l’audio restent dans la galerie/l’enregistreur du téléphone.</p>
+    </section>
+  </main>
+
+  <script>
+    const SCRIPT_URL = 'PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+    function autosave() {
+      const fields = document.querySelectorAll('input, textarea, select');
+      const data = {};
+
+      fields.forEach(el => {
+        if (!el.id && !el.name) return;
+
+        if (el.type === 'checkbox') {
+          data[el.id] = el.checked;
+        } else if (el.type === 'radio') {
+          if (el.checked) data[el.name] = el.value;
+        } else {
+          data[el.id] = el.value;
+        }
+      });
+
+      localStorage.setItem('taborMediaMission', JSON.stringify(data));
+    }
+
+    function restore() {
+      const saved = localStorage.getItem('taborMediaMission');
+      if (!saved) return;
+
+      try {
+        const data = JSON.parse(saved);
+
+        Object.entries(data).forEach(([key, value]) => {
+          const byId = document.getElementById(key);
+
+          if (byId) {
+            if (byId.type === 'checkbox') {
+              byId.checked = Boolean(value);
+            } else {
+              byId.value = value;
+            }
+            return;
+          }
+
+          const radio = document.querySelector(`input[type="radio"][name="${key}"][value="${value}"]`);
+          if (radio) radio.checked = true;
+        });
+      } catch (e) {
+        console.warn('Saved data could not be restored.', e);
+      }
+    }
+
+    function labelText(id) {
+      const label = document.querySelector(`label[for="${id}"]`);
+      return label ? label.innerText.replace('*', '').trim() : id;
+    }
+
+    function validateForm() {
+      const requiredFields = [
+        'groupName',
+        'members',
+        'languages',
+        'firstImpression',
+        'symbolMeaning',
+        'trustedSource',
+        'trustedToday',
+        'spreadExample',
+        'pairReflection',
+        'influenceExample',
+        'influenceHow',
+        'reportScript',
+        'reportInfluence',
+        'mostImportant',
+        'thenToday',
+        'whoTrust'
+      ];
+
+      for (const id of requiredFields) {
+        const el = document.getElementById(id);
+
+        if (!el || !String(el.value).trim()) {
+          alert('Prosím doplňte pole. Chybí: ' + labelText(id));
+          if (el) el.focus();
+          return false;
+        }
+      }
+
+      if (!document.querySelector('input[name="townFeeling"]:checked')) {
+        alert('Prosím vyberte dojem z města v části 1.');
+        return false;
+      }
+
+      const pairIds = ['pairPreacher', 'pairSermon', 'pairBelief', 'pairSymbols'];
+      for (const id of pairIds) {
+        const select = document.getElementById(id);
+        if (!select || select.value !== select.dataset.correct) {
+          alert('V části Find a Pair ještě není vše správně spojeno.');
+          if (select) select.focus();
+          return false;
+        }
+      }
+
+      return true;
+    }
+
+    function collectData() {
+      const fields = document.querySelectorAll('input, textarea, select');
+      const data = {};
+
+      fields.forEach(el => {
+        if (!el.id && !el.name) return;
+
+        if (el.type === 'checkbox') {
+          data[el.id] = el.checked ? 'ano' : 'ne';
+        } else if (el.type === 'radio') {
+          if (el.checked) data[el.name] = el.value;
+        } else {
+          data[el.id] = String(el.value || '').trim();
+        }
+      });
+
+      data.sentAt = new Date().toLocaleString('cs-CZ');
+      data.userAgent = navigator.userAgent;
+
+      return data;
+    }
+
+    async function sendForm() {
+      if (!validateForm()) return;
+
+      autosave();
+
+      const btn = document.getElementById('sendBtn');
+      const pdfBtn = document.getElementById('pdfBtn');
+      const originalText = btn ? btn.innerText : 'Odeslat / Send';
+
+      if (btn) {
+        btn.disabled = true;
+        btn.innerText = 'Odesílání...';
+      }
+      if (pdfBtn) pdfBtn.disabled = true;
+
+      try {
+        if (!SCRIPT_URL || SCRIPT_URL.includes('PASTE_YOUR')) {
+          alert('Chybí adresa Google Apps Scriptu. Nejprve ji vložte do proměnné SCRIPT_URL.');
+          return;
+        }
+
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: {
+            'Content-Type': 'text/plain;charset=utf-8'
+          },
+          body: JSON.stringify(collectData())
+        });
+
+        alert('Formulář byl odeslán do Google tabulky. Data zůstávají uložená v tomto zařízení.');
+      } catch (err) {
+        alert('Odeslání se nepodařilo. Zkontrolujte připojení k internetu a zkuste to znovu.');
+      }
+
+      if (btn) {
+        btn.disabled = false;
+        btn.innerText = originalText;
+      }
+      if (pdfBtn) pdfBtn.disabled = false;
+    }
+
+    async function downloadPDF() {
+      autosave();
+
+      const element = document.querySelector('main');
+      const canvas = await html2canvas(element, { scale: 2 });
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pdfWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pdfHeight;
+
+      while (heightLeft > 0) {
+        position -= pdfHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pdfHeight;
+      }
+
+      const groupName = document.getElementById('groupName')?.value || 'tabor-media-mission';
+      pdf.save(groupName.replace(/[^a-z0-9_-]+/gi, '_') + '.pdf');
+    }
+
+    function checkPairs() {
+      const pairs = [
+        ['pairPreacher', 'resultPreacher'],
+        ['pairSermon', 'resultSermon'],
+        ['pairBelief', 'resultBelief'],
+        ['pairSymbols', 'resultSymbols']
+      ];
+
+      pairs.forEach(([selectId, resultId]) => {
+        const select = document.getElementById(selectId);
+        const result = document.getElementById(resultId);
+        if (!select || !result) return;
+
+        result.classList.remove('ok', 'bad');
+
+        if (!select.value) {
+          result.textContent = '';
+        } else if (select.value === select.dataset.correct) {
+          result.textContent = '✓';
+          result.classList.add('ok');
+        } else {
+          result.textContent = '×';
+          result.classList.add('bad');
+        }
+      });
+    }
+
+    window.addEventListener('load', () => {
+      restore();
+      checkPairs();
+
+      document.querySelectorAll('input, textarea, select').forEach(el => {
+        el.addEventListener('input', autosave);
+        el.addEventListener('change', autosave);
+      });
+
+      document.querySelectorAll('.pair-board select').forEach(el => {
+        el.addEventListener('change', checkPairs);
+      });
+    });
+  </script>
+</body>
+</html>
