@@ -119,7 +119,16 @@
 
 .hero-photo img {
   width: 100%;
+  height: auto;
   display: block;
+}
+
+@media (max-width: 760px) {
+  .hero-photo img {
+    max-height: 260px;
+    object-fit: cover;
+    object-position: center;
+  }
 }
 
 .hero-photo-caption {
