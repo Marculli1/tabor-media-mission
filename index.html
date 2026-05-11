@@ -95,6 +95,31 @@
       margin-top: 4px;
     }
 
+  .hint-box {
+    margin-top: 8px;
+    border-radius: 12px;
+    background: #fff8e6;
+    border: 1px solid #f4d38a;
+    padding: 10px 12px;
+    font-size: .92rem;
+    }
+
+  .hint-box summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: #9a6700;
+    list-style: none;
+    }
+
+  .hint-box summary::-webkit-details-marker {
+    display: none;
+    }
+
+  .hint-content {
+    margin-top: 8px;
+    color: #5f4b1c;
+    }
+    
     input, textarea, select {
       width: 100%;
       border: 1px solid #cdbfb5;
@@ -341,8 +366,10 @@
   <div class="hero-photo-caption">
     Tábor – Žižkovo náměstí. Photo: Wikimedia Commons
   </div>
-    
+</div>
+
     <section class="card">
+  
       <div class="task-title"><span class="badge">1</span><h2>First impression of Tábor / První dojem z Tábora / Première impression de Tábor</h2></div>
       <div class="langbox">
         <p><strong>CZ:</strong> Dívejte se na město jako detektivové. Co vám město říká svými budovami, ulicemi, symboly a atmosférou?</p>
@@ -351,6 +378,15 @@
       </div>
       <label for="firstImpression">Co vás zaujalo jako první? / What caught your attention first? / Qu’est-ce qui a attiré votre attention en premier ?</label>
       <textarea id="firstImpression"></textarea>
+      <details class="hint-box">
+      <summary>💡 Hint / Nápověda / Indice</summary>
+     <div class="hint-content">
+    CZ: Zaměřte se na zvuky, symboly, barvy, kostely, sochy, vlajky, lidi nebo atmosféru města.<br><br>
+    EN: Focus on sounds, symbols, colours, churches, statues, flags, people or the atmosphere of the town.<br><br>
+    FR: Observez les sons, les symboles, les couleurs, les églises, les statues, les drapeaux, les gens ou l’atmosphère de la ville.
+      </div>
+      </details>
+
       
     </section>
 
