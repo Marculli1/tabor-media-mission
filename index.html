@@ -562,50 +562,41 @@
     }
 
     function validateForm() {
-      const requiredFields = [
-        'groupName',
-        'members',
-        'languages',
-        'firstImpression',
-        'trustedSource',
-        'trustedToday',
-        'spreadExample',
-        'pairReflection',
-        'influenceExample',
-        'influenceHow',
-        'reportScript',
-        'mostImportant',
-        'thenToday',
-        'whoTrust'
-      ];
+  const requiredFields = [
+    'groupName',
+    'members',
+    'languages',
+    'firstImpression',
+    'trustedSource',
+    'trustedToday',
+    'spreadExample',
+    'pairReflection',
+    'reportScript',
+    'mostImportant'
+  ];
 
-      for (const id of requiredFields) {
-        const el = document.getElementById(id);
+  for (const id of requiredFields) {
+    const el = document.getElementById(id);
 
-        if (!el || !String(el.value).trim()) {
-          alert('Prosím doplňte pole. Chybí: ' + labelText(id));
-          if (el) el.focus();
-          return false;
-        }
-      }
-
-      if (!document.querySelector('input[name="townFeeling"]:checked')) {
-        alert('Prosím vyberte dojem z města v části 1.');
-        return false;
-      }
-
-      const pairIds = ['pairPreacher', 'pairSermon', 'pairBelief', 'pairSymbols'];
-      for (const id of pairIds) {
-        const select = document.getElementById(id);
-        if (!select || select.value !== select.dataset.correct) {
-          alert('V části Find a Pair ještě není vše správně spojeno.');
-          if (select) select.focus();
-          return false;
-        }
-      }
-
-      return true;
+    if (!el || !String(el.value).trim()) {
+      alert('Prosím doplňte pole. Chybí: ' + labelText(id));
+      if (el) el.focus();
+      return false;
     }
+  }
+
+  const pairIds = ['pairPreacher', 'pairSermon', 'pairBelief', 'pairSymbols'];
+  for (const id of pairIds) {
+    const select = document.getElementById(id);
+    if (!select || select.value !== select.dataset.correct) {
+      alert('V části Find a Pair ještě není vše správně spojeno.');
+      if (select) select.focus();
+      return false;
+    }
+  }
+
+  return true;
+}
 
     function collectData() {
       const fields = document.querySelectorAll('input, textarea, select');
